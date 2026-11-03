@@ -1,0 +1,54 @@
+node_modules/
+dist/
+.env
+server/.env
+*.log
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+
+# Database backups
+*.backup
+*.dump
+*.sql.gz
+
+# Project backups
+*.zip
+*.7z
+*.rar
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs
+*.log
+
+# Local editor files
+.vscode/
+
+# Local project backup folders
+backup-before-live-gps/
+backup-live-gps-*/
+backup-*/
+
+# Local diagnostic scripts
+check-users.mjs
+
+# Historical source-code backups
+*.before-*
+*.bak
+
+# Local development diagnostics
+server/check-boarding-db.mjs
+server/check-shuttle-gps.mjs

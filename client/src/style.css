@@ -1,0 +1,274 @@
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#071c48;background:#f4f7fb}button,input,select{font:inherit}button{cursor:pointer}h1,h2,h3,p{margin-top:0}h1{font-size:26px;margin-bottom:4px}h3{font-size:18px}.login-page{min-height:100vh;background:linear-gradient(180deg,rgba(1,26,68,.08),rgba(1,26,68,.16)),url('/building.jpeg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;padding:25px}.login-overlay{width:min(450px,100%);display:flex;align-items:center;flex-direction:column;gap:35px}.brand{text-align:center;color:#001e5b;text-shadow:0 1px 12px #fff}.brand strong{font-size:52px;font-weight:900;letter-spacing:-3px;display:block}.brand span,.top-brand span{color:#e62230}.brand b{font-size:23px}.login-card{width:100%;background:rgba(255,255,255,.97);padding:35px 28px;border-radius:16px;box-shadow:0 14px 45px #001e5b35;text-align:center}.login-card h2{font-size:23px;margin-bottom:25px}.field{display:flex;align-items:center;gap:12px;border:1.5px solid #b7c8dd;border-radius:11px;padding:13px;margin-bottom:12px;color:#073d87}.field input{width:100%;outline:0;border:0;background:transparent;font-size:15px}.eye{border:0;background:transparent;color:#536b88}.login-options{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin:15px 0 25px}.login-options span,.signup span{color:#003a98}.primary{background:linear-gradient(#0748a0,#001b5d);color:#fff;border:0;border-radius:8px;padding:12px 22px;font-weight:bold}.login-card .primary{width:100%;font-size:17px}.signup{font-size:14px;margin:18px 0 0}.error{color:#b51d27;font-weight:bold}.topbar{height:58px;background:linear-gradient(90deg,#00245d,#00418e,#001b53);color:white;display:flex;align-items:center;gap:25px;padding:0 22px}.top-brand{font-size:26px;font-weight:900;letter-spacing:-1px}.top-brand small{font-size:13px;letter-spacing:0}.profile{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:13px}.profile button{background:transparent;color:white;border:0}.content{max-width:1050px;margin:0 auto;padding:24px 30px}.content>p{margin-bottom:18px}.passenger{max-width:760px}.status-card,.route-box,.panel,.location-box{background:white;border:1px solid #d7e0ed;border-radius:11px;padding:15px;margin-bottom:12px}.status-card{display:flex;align-items:center;gap:15px;min-height:90px}.status-card h2{margin:2px 0}.status-card small{color:#475873}.status-bus{margin-left:auto;color:#003680}.green-dot{background:#008b20;border-radius:50%;width:15px;height:15px;align-self:flex-start}.route-line{display:flex;gap:14px;align-items:center;margin:12px 5px;color:#003278}.map{height:270px;border-radius:10px;overflow:hidden;border:1px solid #dbe2ed;margin-bottom:12px}.panel h3{display:flex;align-items:center;gap:10px;margin-bottom:12px}.departure{display:flex;align-items:center;gap:20px;padding:10px;border-top:1px solid #e4e9f0;font-size:14px}.departure b{min-width:75px}.departure span{flex:1}.departure em{font-style:normal;border-radius:15px;background:#d6f2d8;color:#075b18;padding:4px 10px;font-size:12px}.train-note{background:#e8f0ff;border:1px solid #b8cee9;padding:15px;border-radius:9px;font-weight:bold}.driver{max-width:850px}.driver h3{margin-top:18px}.status-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.status-buttons button{padding:14px 4px;background:#f5f7fb;border:1px solid #d2dbe6;border-radius:10px;font-size:13px;color:#0c2250}.status-buttons strong{display:block;font-size:26px;margin-bottom:5px}.status-buttons .selected.on-route{background:#008f16;color:white}.status-buttons .selected.at-stop{background:#d9e6f7}.status-buttons .selected.delayed{background:#fff0ce}.status-buttons .selected.out-of-service{background:#ffe0e0}.share{display:flex;justify-content:center;align-items:center;gap:10px;width:100%;background:#00860c;color:white;border:0;border-radius:8px;font-size:18px;font-weight:bold;padding:14px;margin:17px 0}.gps-message{display:flex;gap:12px;align-items:center;background:#e8f4e9;padding:15px;border-radius:10px;margin-bottom:15px}.gps-message small,.location-box small{display:block;margin-top:5px}.route-box{display:flex;gap:18px;align-items:center}.route-box b{display:block;margin-top:4px}.safety{display:flex;gap:15px;align-items:center;margin:20px}.location-box{display:flex;gap:15px;align-items:center;background:#edf4fc}.admin-layout{display:flex;min-height:calc(100vh - 58px)}.sidebar{width:220px;flex-shrink:0;background:linear-gradient(#063d86,#001341);padding:18px 12px}.sidebar button{display:flex;gap:15px;align-items:center;color:white;background:transparent;border:0;border-radius:7px;padding:13px 15px;width:100%;text-align:left}.sidebar button.current{background:#1154aa}.admin-content{flex:1;min-width:0;padding:25px}.admin-heading{display:flex;align-items:center;gap:20px;justify-content:space-between;margin-bottom:15px}.admin-heading h1{font-size:23px}.stats{display:grid;grid-template-columns:repeat(4,minmax(125px,1fr));gap:8px}.stats>div{display:grid;grid-template-columns:30px 1fr;gap:4px;background:white;border:1px solid #dbe2ed;border-radius:9px;padding:12px}.stats svg{grid-row:span 2;color:#00871c}.stats small{font-size:11px}.stats b{font-size:15px}.admin-grid{display:grid;grid-template-columns:1.2fr .9fr 1.2fr;gap:12px}.admin-grid .map{height:260px}.stop{display:flex;gap:15px;align-items:center;padding:15px 0;border-bottom:1px dashed #d3dce8}.stop span{background:green;color:white;border-radius:50%;width:32px;height:32px;display:grid;place-items:center}.stop p{margin:5px 0}.right-stack .primary{width:100%}.right-stack p{font-size:13px}.notice{padding:12px;background:#fff3d8;border-radius:8px}.user-form{display:grid;grid-template-columns:repeat(2,minmax(150px,1fr));gap:12px}.user-form input,.user-form select{padding:12px;border:1px solid #c4d1e2;border-radius:7px}.loading{padding:80px;text-align:center}@media(max-width:1100px){.admin-heading{display:block}.stats{margin-top:15px}.admin-grid{grid-template-columns:1fr 1fr}.right-stack{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}}@media(max-width:700px){.topbar{padding:0 12px;gap:8px}.top-brand{font-size:18px}.top-brand small{font-size:9px}.profile{font-size:0}.sidebar{width:65px;padding:10px 5px}.sidebar button{font-size:0;justify-content:center;padding:14px}.admin-content{padding:15px}.stats{grid-template-columns:1fr 1fr}.admin-grid,.right-stack{display:block}.content{padding:20px 12px}.login-page{background-position:center}.brand strong{font-size:40px}.brand b{font-size:19px}.status-buttons{gap:5px}.status-buttons button{font-size:11px}.user-form{grid-template-columns:1fr}}
+
+/* Live GPS upgrade */
+.shuttle-gps-marker{background:#073c83;border:3px solid white;border-radius:50%;box-shadow:0 2px 12px #123b6588;display:grid;place-items:center}.shuttle-gps-marker span{font-size:23px}.arrival-panel{display:grid;gap:7px;background:#edf8f3;border:1px solid #a9dbc6;border-radius:10px;padding:13px;margin:10px 0 15px;color:#0c3957}.arrival-panel small{color:#45616b}.boarding-panel select{width:100%;margin:7px 0 12px;padding:10px;border:1px solid #a7b7c9;border-radius:8px}.boarding-actions{display:flex;gap:10px;flex-wrap:wrap}.boarding-actions button{background:#07448b;color:white;border:0;border-radius:8px;padding:12px 16px;font-weight:bold}.boarding-actions button:disabled{opacity:.45;cursor:not-allowed}.boarding-roster{padding:10px 0}.boarding-roster p{margin:6px 0}
+
+/* Larger, easier-to-navigate shuttle map */
+.map {
+  width: 100%;
+  height: 520px;
+  min-height: 420px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid #dce5e9;
+  margin: 18px 0;
+}
+
+.map .leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.map .leaflet-control-zoom a {
+  width: 38px;
+  height: 38px;
+  line-height: 38px;
+  font-size: 23px;
+}
+
+@media (max-width: 768px) {
+  .map {
+    height: 65vh;
+    min-height: 380px;
+    border-radius: 12px;
+  }
+}
+
+/* ADvTECH Shuttle Tracker - Mobile responsive layout */
+
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.app, .content, .admin-layout, .admin-content {
+  min-width: 0;
+}
+
+.map {
+  width: 100%;
+  height: 520px;
+  max-width: 100%;
+}
+
+.map .leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+
+  .app {
+    width: 100%;
+    overflow-x: clip;
+  }
+
+  .topbar {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .top-brand {
+    font-size: 15px;
+    line-height: 1.3;
+  }
+
+  .top-brand small {
+    font-size: 10px;
+  }
+
+  .profile {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .content,
+  .passenger,
+  .admin-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 14px 12px 24px;
+  }
+
+  .content h1,
+  .admin-content h1 {
+    font-size: clamp(22px, 6vw, 28px);
+    line-height: 1.25;
+  }
+
+  .admin-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar button {
+    flex: 0 0 auto;
+    min-height: 44px;
+    white-space: nowrap;
+    padding: 10px 12px;
+  }
+
+  .admin-grid,
+  .admin-heading,
+  .stats,
+  .right-stack {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    width: 100%;
+  }
+
+  .panel,
+  .map-panel,
+  .status-card,
+  .route-line,
+  .route-box,
+  .arrival-panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+
+  .map {
+    height: 52dvh;
+    min-height: 340px;
+    max-height: 560px;
+    margin: 12px 0;
+    border-radius: 14px;
+  }
+
+  .map .leaflet-control-zoom a {
+    width: 42px;
+    height: 42px;
+    line-height: 42px;
+  }
+
+  .center-shuttle-button {
+    max-width: calc(100% - 24px);
+    min-height: 44px;
+    padding: 10px 16px;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  .boarding-actions,
+  .user-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  button,
+  select,
+  input {
+    max-width: 100%;
+  }
+
+  .departure,
+  .stop {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .login-card {
+    width: min(100%, 420px);
+    max-width: calc(100vw - 24px);
+  }
+
+  .login-overlay {
+    padding: 16px 12px;
+  }
+}
+
+@media (max-width: 380px) {
+
+  .top-brand {
+    font-size: 13px;
+  }
+
+  .top-brand small {
+    font-size: 9px;
+  }
+
+  .content,
+  .passenger,
+  .admin-content {
+    padding: 10px 8px 20px;
+  }
+
+  .panel {
+    padding: 10px;
+  }
+
+  .map {
+    min-height: 300px;
+    height: 48dvh;
+  }
+}
+
+/* Driver live map */
+
+.driver-map-panel {
+  width: 100%;
+  min-width: 0;
+  margin-top: 16px;
+}
+
+.driver-map-panel .map {
+  width: 100%;
+  height: 480px;
+  min-height: 350px;
+}
+
+@media (max-width: 768px) {
+  .driver-map-panel {
+    padding: 12px;
+  }
+
+  .driver-map-panel .map {
+    height: 50dvh;
+    min-height: 320px;
+    max-height: 520px;
+  }
+}
