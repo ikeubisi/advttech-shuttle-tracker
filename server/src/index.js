@@ -1,4 +1,4 @@
-import { getBoardingOverview } from './boarding-overview.js';
+﻿import { getBoardingOverview } from './boarding-overview.js';
 import { boardingRouter } from './boarding-routes.js';
 import 'dotenv/config';import express from 'express';import helmet from 'helmet';import cookieParser from 'cookie-parser';import rateLimit from 'express-rate-limit';import bcrypt from 'bcryptjs';import crypto from 'node:crypto';import {pool} from './db.js';import path from 'node:path';import {fileURLToPath} from 'node:url';
 const app=express();app.use(helmet({contentSecurityPolicy:false}));app.use(express.json({limit:'20kb'}));app.use(cookieParser());const hash=s=>crypto.createHash('sha256').update(s).digest('hex');const wrap=fn=>(req,res,next)=>Promise.resolve(fn(req,res,next)).catch(next);const auth=wrap(async(req,res,next)=>{const token=req.cookies.shuttle_session;if(!token)return res.status(401).json({error:'Please sign in'});const q=await pool.query('SELECT u.id,u.email AS username,u.name AS "displayName",u.role FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.expires_at>now() AND u.is_active=TRUE',[hash(token)]);if(!q.rowCount)return res.status(401).json({error:'Session expired'});req.user=q.rows[0];next()});const role=(...roles)=>(req,res,next)=>roles.includes(req.user.role)?next():res.status(403).json({error:'Access denied'});
@@ -47,4 +47,17 @@ app.patch('/api/admin/users/:id/active',auth,role('admin'),wrap(async(req,res)=>
 }));
 app.use('/api/passenger',auth,boardingRouter);
 app.get('/api/admin/history',auth,role('admin'),wrap(async(req,res)=>{const q=await pool.query('SELECT l.id,l.lat,l.lng,l.accuracy,l.created_at AS "createdAt",u.name AS driver FROM locations l LEFT JOIN users u ON u.id=l.user_id ORDER BY l.created_at DESC LIMIT 100');res.json(q.rows)}));
+const clientDist = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../../client/dist'
+);
+
+app.use(express.static(clientDist));
+
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/')) return next();
+  res.sendFile(path.join(clientDist, 'index.html'));
+});
 app.use((err,req,res,next)=>{console.error(err);res.status(500).json({error:'Server error'})});const port=Number(process.env.PORT||4000);app.listen(port,'0.0.0.0',()=>console.log(`ADvTECH API running on port ${port}`));
+
+
