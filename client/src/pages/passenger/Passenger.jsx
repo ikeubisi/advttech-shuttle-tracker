@@ -22,7 +22,7 @@ export default function Passenger({ data, reload }) {
       <div className="route-line">
         <BusFront size={26} />
         <b>
-          {data?.route?.start_name || 'Sandton Gautrain Station'} â†”<br />
+          {data?.route?.start_name || 'Sandton Gautrain Station'} ↔<br />
           {data?.route?.end_name || 'ADvTECH 1 Waterstone'}
         </b>
       </div>
