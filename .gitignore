@@ -52,3 +52,26 @@ check-users.mjs
 # Local development diagnostics
 server/check-boarding-db.mjs
 server/check-shuttle-gps.mjs
+node_modules/
+**/node_modules/
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+dist/
+**/dist/
+*.backup
+*.sql.gz
+*.zip
+*.log
+
+_reorganization_backup/
+
+# Files not needed for Render
+client/capacitor.config*.json
+client/assets/
+client/icon.png
+server/start-production.ps1
+server/test-trip-direction.mjs

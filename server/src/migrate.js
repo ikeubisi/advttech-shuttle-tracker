@@ -1,4 +1,4 @@
-import {pool} from './db.js';
+import { pool } from './db.js';
 await pool.query(`CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY,username TEXT UNIQUE NOT NULL,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,role TEXT NOT NULL CHECK(role IN ('admin','driver','passenger')),created_at TIMESTAMPTZ DEFAULT now());
 CREATE TABLE IF NOT EXISTS sessions(token_hash TEXT PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,expires_at TIMESTAMPTZ NOT NULL);
 CREATE TABLE IF NOT EXISTS routes(id SERIAL PRIMARY KEY,name TEXT NOT NULL,start_name TEXT NOT NULL,end_name TEXT NOT NULL);
@@ -10,4 +10,6 @@ INSERT INTO shuttle_state(id,status) VALUES(1,'At Stop') ON CONFLICT DO NOTHING;
 INSERT INTO routes(id,name,start_name,end_name) VALUES(1,'Sandton Gautrain Station ↔ ADvTECH 1 Waterstone','Sandton Gautrain Station','ADvTECH 1 Waterstone') ON CONFLICT DO NOTHING;
 INSERT INTO stops(id,route_id,name,lat,lng,stop_order) VALUES(1,1,'Sandton Gautrain Station',-26.1076,28.0567,1),(2,1,'ADvTECH 1 Waterstone',-26.094,28.071,2) ON CONFLICT DO NOTHING;
 INSERT INTO departures(id,route_id,departure_time,destination,status) VALUES(1,1,'15:00','Sandton Gautrain Station','Scheduled'),(2,1,'15:15','Sandton Gautrain Station','Scheduled'),(3,1,'15:30','Sandton Gautrain Station','Scheduled') ON CONFLICT DO NOTHING;
-SELECT setval(pg_get_serial_sequence('routes','id'),GREATEST((SELECT max(id) FROM routes),1));SELECT setval(pg_get_serial_sequence('stops','id'),GREATEST((SELECT max(id) FROM stops),1));SELECT setval(pg_get_serial_sequence('departures','id'),GREATEST((SELECT max(id) FROM departures),1));`);console.log('Database migrated');await pool.end();
+SELECT setval(pg_get_serial_sequence('routes','id'),GREATEST((SELECT max(id) FROM routes),1));SELECT setval(pg_get_serial_sequence('stops','id'),GREATEST((SELECT max(id) FROM stops),1));SELECT setval(pg_get_serial_sequence('departures','id'),GREATEST((SELECT max(id) FROM departures),1));`);
+console.log('Database migrated');
+await pool.end();
