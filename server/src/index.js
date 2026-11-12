@@ -43,7 +43,7 @@ app.get('/api/admin/database-check', auth, role('admin'), wrap(async (req, res) 
   const result = {};
   for (const table of ['routes', 'stops', 'departures', 'shuttles']) {
     const columns = await pool.query(
-      `SELECT column_name, data_type, is_nullable
+      `SELECT column_name, data_type, is_nullable, column_default, is_identity
        FROM information_schema.columns
        WHERE table_schema = 'public' AND table_name = $1
        ORDER BY ordinal_position`,
