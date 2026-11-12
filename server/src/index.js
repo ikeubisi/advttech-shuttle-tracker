@@ -39,6 +39,21 @@ registerAuthRoutes(app, { auth, wrap, pool, hash, rateLimit, bcrypt, crypto });
 registerOverviewRoutes(app, { auth, wrap, pool, getBoardingOverview });
 registerDriverRoutes(app, { auth, role, wrap, pool });
 registerAdminRoutes(app, { auth, role, wrap, pool, bcrypt, boardingRouter });
+app.get('/api/admin/database-check', auth, role('admin'), wrap(async (req, res) => {
+  const result = {};
+  for (const table of ['routes', 'stops', 'departures']) {
+    const columns = await pool.query(
+      `SELECT column_name, data_type, is_nullable
+       FROM information_schema.columns
+       WHERE table_schema = 'public' AND table_name = $1
+       ORDER BY ordinal_position`,
+      [table]
+    );
+    const counts = await pool.query(`SELECT COUNT(*)::integer AS total FROM "${table}"`);
+    result[table] = { columns: columns.rows, count: counts.rows[0].total };
+  }
+  res.json(result);
+}));
 const clientDist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../client/dist');
 
 app.use(express.static(clientDist));
