@@ -52,6 +52,23 @@ app.get('/api/admin/database-check', auth, role('admin'), wrap(async (req, res) 
     const counts = await pool.query(`SELECT COUNT(*)::integer AS total FROM "${table}"`);
     result[table] = { columns: columns.rows, count: counts.rows[0].total };
   }
+  const constraints = await pool.query(`
+    SELECT
+      tc.table_name,
+      tc.constraint_name,
+      tc.constraint_type,
+      pg_get_constraintdef(pc.oid) AS definition
+    FROM information_schema.table_constraints tc
+    JOIN pg_namespace ns ON ns.nspname = tc.table_schema
+    JOIN pg_class cls ON cls.relname = tc.table_name
+      AND cls.relnamespace = ns.oid
+    JOIN pg_constraint pc ON pc.conname = tc.constraint_name
+      AND pc.conrelid = cls.oid
+    WHERE tc.table_schema = 'public'
+      AND tc.table_name IN ('routes', 'stops', 'departures', 'shuttles')
+    ORDER BY tc.table_name, tc.constraint_name
+  `);
+  result.constraints = constraints.rows;
   res.json(result);
 }));
 const clientDist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../client/dist');
