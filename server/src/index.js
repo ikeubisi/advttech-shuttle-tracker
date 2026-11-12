@@ -41,7 +41,7 @@ registerDriverRoutes(app, { auth, role, wrap, pool });
 registerAdminRoutes(app, { auth, role, wrap, pool, bcrypt, boardingRouter });
 app.get('/api/admin/database-check', auth, role('admin'), wrap(async (req, res) => {
   const result = {};
-  for (const table of ['routes', 'stops', 'departures']) {
+  for (const table of ['routes', 'stops', 'departures', 'shuttles']) {
     const columns = await pool.query(
       `SELECT column_name, data_type, is_nullable
        FROM information_schema.columns
