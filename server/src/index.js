@@ -1,3 +1,4 @@
+import { registerShuttleRestoration } from './restore-shuttle.js';
 import { registerAuthRoutes } from './routes/auth.js';
 import { registerOverviewRoutes } from './routes/overview.js';
 import { registerDriverRoutes } from './routes/driver.js';
@@ -39,6 +40,7 @@ registerAuthRoutes(app, { auth, wrap, pool, hash, rateLimit, bcrypt, crypto });
 registerOverviewRoutes(app, { auth, wrap, pool, getBoardingOverview });
 registerDriverRoutes(app, { auth, role, wrap, pool });
 registerAdminRoutes(app, { auth, role, wrap, pool, bcrypt, boardingRouter });
+registerShuttleRestoration(app, { auth, role, wrap, pool });
 app.get('/api/admin/database-check', auth, role('admin'), wrap(async (req, res) => {
   const result = {};
   for (const table of ['routes', 'stops', 'departures', 'shuttles']) {
