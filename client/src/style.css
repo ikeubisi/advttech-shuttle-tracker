@@ -858,3 +858,22 @@ body {
     max-height: 520px;
   }
 }
+
+/* White ADvTECH logo on the login page */
+.login-page .brand {
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 20, 55, 0.85);
+}
+
+.login-page .brand strong {
+  color: #ffffff;
+}
+
+.login-page .brand strong span {
+  color: #e62230;
+}
+
+.login-page .brand b {
+  color: #ffffff;
+}
+
