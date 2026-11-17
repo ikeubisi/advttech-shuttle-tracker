@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 const marker = new L.Icon({
@@ -10,9 +10,9 @@ const marker = new L.Icon({
 const initial = [[-26.1076, 28.0567], [-26.094, 28.071]];
 const shuttleIcon = L.divIcon({
   className: 'shuttle-gps-marker',
-  html: '<span aria-label="Shuttle">&#128652;</span>',
-  iconSize: [42, 42],
-  iconAnchor: [21, 21],
+  html: '<div class="quantum-map-marker"><span>🚐</span><small>QUANTUM</small></div>',
+  iconSize: [76, 52],
+  iconAnchor: [38, 26],
 });
 function FollowShuttle({ gps }) {
   const map = useMap();
@@ -111,3 +111,4 @@ export default function ShuttleMap({ data }) {
     </div>
   );
 }
+

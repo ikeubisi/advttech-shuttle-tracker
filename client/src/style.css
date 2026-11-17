@@ -886,3 +886,439 @@ body {
   margin: 0 auto 12px;
   object-fit: contain;
 }
+
+/* ==========================================
+   ADvTECH PREMIUM PASSENGER REDESIGN
+   Passenger-only styling
+   ========================================== */
+
+.passenger-premium {
+  --passenger-navy: #092d63;
+  --passenger-blue: #1454a0;
+  --passenger-light: #edf4fc;
+  --passenger-red: #e62230;
+  max-width: 1000px;
+  padding: 20px 22px 35px;
+}
+
+.passenger-premium .passenger-hero {
+  position: relative;
+  min-height: 260px;
+  overflow: hidden;
+  border-radius: 22px;
+  background:
+    linear-gradient(90deg, rgba(3,24,57,.91), rgba(3,24,57,.34)),
+    url('/building.jpeg') center 48% / cover no-repeat;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+}
+
+.passenger-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 25px 30px;
+  color: white;
+}
+
+.passenger-logo-wrap {
+  display: inline-flex;
+  background: white;
+  border-radius: 9px;
+  padding: 7px 12px;
+  margin-bottom: 13px;
+}
+
+.passenger-logo {
+  display: block;
+  width: 185px;
+  max-height: 65px;
+  object-fit: contain;
+}
+
+.passenger-eyebrow,
+.passenger-kicker,
+.quantum-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: #6484ac;
+}
+
+.passenger-eyebrow {
+  color: #d9e8ff;
+}
+
+.passenger-hero h1 {
+  font-size: clamp(30px, 5vw, 43px);
+  line-height: 1.08;
+  margin: 10px 0;
+  color: white;
+}
+
+.passenger-hero p {
+  color: #e0eafa;
+  margin: 0;
+}
+
+.passenger-premium .passenger-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 24px 0 13px;
+  color: var(--passenger-navy);
+}
+
+.passenger-section-heading h2 {
+  font-size: 21px;
+  margin: 5px 0;
+  color: var(--passenger-navy);
+}
+
+.passenger-section-heading p {
+  color: #64748b;
+  margin: 0;
+  font-size: 13px;
+}
+
+.gps-indicator {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 30px;
+  padding: 9px 12px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.gps-indicator > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.gps-online {
+  background: #e7f7ef;
+  color: #087a48;
+}
+
+.gps-offline {
+  background: #fff3e8;
+  color: #a85b14;
+}
+
+.quantum-status-card {
+  border-radius: 18px;
+  padding: 22px;
+  background: linear-gradient(125deg, #092d63, #1454a0);
+  color: white;
+  box-shadow: 0 9px 25px rgba(9,45,99,.16);
+}
+
+.quantum-status-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.quantum-status-card .quantum-label {
+  color: #c4d8f3;
+}
+
+.quantum-status-card h2 {
+  color: white;
+  font-size: 27px;
+  margin: 8px 0 3px;
+}
+
+.quantum-status-card p {
+  color: #d9e8fa;
+  margin: 0;
+  font-size: 13px;
+}
+
+.quantum-vehicle-icon {
+  min-width: 85px;
+  min-height: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: rgba(255,255,255,.13);
+  color: white;
+}
+
+.quantum-vehicle-icon small {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.quantum-status-footer {
+  border-top: 1px solid rgba(255,255,255,.2);
+  padding-top: 13px;
+  margin-top: 18px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: #d9e8fa;
+}
+
+.passenger-route-card,
+.passenger-premium .passenger-departures {
+  background: white;
+  border: 1px solid #e0e8f2;
+  border-radius: 18px;
+  padding: 20px;
+  margin: 15px 0;
+  box-shadow: 0 5px 18px rgba(9,45,99,.045);
+}
+
+.passenger-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--passenger-blue);
+  margin-bottom: 18px;
+}
+
+.passenger-card-heading h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--passenger-navy);
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+.passenger-route-point {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.passenger-route-point > div {
+  display: grid;
+  gap: 4px;
+}
+
+.passenger-route-point small {
+  color: #8292a8;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.passenger-route-point strong {
+  color: var(--passenger-navy);
+  font-size: 14px;
+}
+
+.route-origin-dot,
+.route-destination-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.route-origin-dot {
+  background: #178c60;
+  box-shadow: 0 0 0 5px #e5f5ed;
+}
+
+.route-destination-dot {
+  background: var(--passenger-red);
+  box-shadow: 0 0 0 5px #ffeaeb;
+}
+
+.passenger-route-connector {
+  height: 28px;
+  border-left: 2px dashed #bdcce0;
+  margin: 4px 0 4px 5px;
+}
+
+.passenger-map-section .map {
+  height: 400px;
+  min-height: 300px;
+  border-radius: 19px;
+  border: 1px solid #dce6f2;
+  overflow: hidden;
+  margin: 12px 0 8px;
+}
+
+.passenger-map-legend {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  color: #65758a;
+  font-size: 11px;
+  padding: 9px 2px;
+}
+
+.passenger-map-legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.passenger-map-legend i {
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.legend-shuttle { background: #1454a0; }
+.legend-stop { background: #e62230; }
+.legend-route { background: #12a66a; }
+
+.passenger-premium .arrival-panel {
+  background: #edf5ff;
+  border: 1px solid #c8dbf2;
+  border-radius: 16px;
+  padding: 19px;
+  margin: 12px 0;
+}
+
+.passenger-premium .boarding-panel {
+  border-radius: 18px;
+  border: 1px solid #e0e8f2;
+  padding: 20px;
+  box-shadow: 0 5px 18px rgba(9,45,99,.045);
+}
+
+.passenger-premium .boarding-actions {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.passenger-premium .boarding-actions button {
+  min-height: 48px;
+  border-radius: 11px;
+  flex: 1 1 140px;
+  font-weight: 700;
+}
+
+.passenger-premium .boarding-actions button:first-child {
+  background: var(--passenger-navy);
+  color: white;
+}
+
+.passenger-premium .boarding-actions button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.passenger-empty {
+  color: #718096;
+  font-size: 13px;
+}
+
+.passenger-footer {
+  text-align: center;
+  padding: 22px 10px;
+  color: #718096;
+  font-size: 11px;
+  letter-spacing: .7px;
+}
+
+.passenger-footer p {
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+.quantum-map-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 52px;
+  border: 2px solid white;
+  border-radius: 14px;
+  background: #092d63;
+  box-shadow: 0 3px 12px rgba(0,0,0,.3);
+  color: white;
+  font-size: 23px;
+}
+
+.quantum-map-marker small {
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .passenger-premium {
+    padding: 12px 12px 28px;
+  }
+
+  .passenger-premium .passenger-hero {
+    min-height: 225px;
+    border-radius: 17px;
+    background-position: center;
+  }
+
+  .passenger-hero-content {
+    padding: 20px;
+  }
+
+  .passenger-logo {
+    width: 155px;
+  }
+
+  .passenger-hero h1 {
+    font-size: 32px;
+  }
+
+  .passenger-premium .passenger-section-heading {
+    margin-top: 20px;
+  }
+
+  .passenger-section-heading h2 {
+    font-size: 19px;
+  }
+
+  .quantum-status-card {
+    padding: 18px;
+  }
+
+  .passenger-map-section .map {
+    height: 330px;
+    min-height: 300px;
+  }
+
+  .passenger-route-card,
+  .passenger-premium .passenger-departures,
+  .passenger-premium .boarding-panel {
+    padding: 16px;
+  }
+
+  .passenger-map-legend {
+    gap: 10px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .gps-indicator {
+    padding: 7px;
+    font-size: 9px;
+  }
+
+  .quantum-status-card h2 {
+    font-size: 23px;
+  }
+
+  .passenger-hero h1 {
+    font-size: 29px;
+  }
+}
