@@ -52,4 +52,23 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Server error' });
 });
 const port = Number(process.env.PORT || 4000);
-app.listen(port, '0.0.0.0', () => console.log(`ADvTECH API running on port ${port}`));
+
+async function startServer() {
+  try {
+    await pool.query(
+      "INSERT INTO shuttle_state(id, status) VALUES (1, 'At Stop') ON CONFLICT (id) DO NOTHING"
+    );
+
+    console.log('Shuttle status initialized');
+
+    app.listen(port, '0.0.0.0', () => {
+      console.log(`ADvTECH API running on port ${port}`);
+    });
+  } catch (error) {
+    console.error('Database initialization failed:', error);
+    process.exitCode = 1;
+    await pool.end();
+  }
+}
+
+startServer();
