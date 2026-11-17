@@ -1,6 +1,8 @@
+import { completeTripAtDestination } from '../services/trip-completion.js';
 import { Router } from 'express';
 import { pool } from '../database/db.js';
 import { verifyGps, validCoordinates } from '../services/boarding-gps.js';
+import { linkTripToActiveVisit } from '../services/link-trip-to-visit.js';
 
 export const boardingRouter = Router();
 
@@ -200,6 +202,19 @@ boardingRouter.post('/board', passengerOnly, async (req, res, next) => {
       );
     }
 
+    const link = await linkTripToActiveVisit(client, {
+      shuttleId: shuttle.id,
+      stopId: stop.id,
+      tripId: trip.rows[0].id,
+    });
+
+    if (!link.linked) {
+      await client.query('ROLLBACK');
+      return res.status(409).json({
+        error: 'No active stop visit available for boarding',
+      });
+    }
+
     const tripKey = `trip-${trip.rows[0].id}`;
 
     const boarding = await client.query(
@@ -240,6 +255,34 @@ boardingRouter.post('/exit', passengerOnly, async (req, res, next) => {
 
   try {
     await client.query('BEGIN');
+
+    // Identify the shuttle before acquiring row locks.
+    const shuttleLookup = await client.query(
+      `SELECT DISTINCT t.shuttle_id
+       FROM passenger_boardings b
+       JOIN trips t ON b.trip_key = 'trip-' || t.id::text
+       WHERE b.user_id=$1 AND b.exited_at IS NULL`,
+      [req.user.id],
+    );
+
+    if (shuttleLookup.rowCount !== 1) {
+      await client.query('ROLLBACK');
+      return res.status(409).json({
+        error: shuttleLookup.rowCount === 0
+          ? 'You are not currently onboard'
+          : 'Multiple active shuttle boardings require review',
+      });
+    }
+
+    // Use the same shuttle lock as boarding and trip completion.
+    const shuttleLock = await client.query(
+      `SELECT id FROM shuttles WHERE id=$1 FOR UPDATE`,
+      [shuttleLookup.rows[0].shuttle_id],
+    );
+
+    if (!shuttleLock.rowCount) {
+      throw new Error('Boarding shuttle not found');
+    }
 
     const active = await client.query(
       `
@@ -299,9 +342,11 @@ boardingRouter.post('/exit', passengerOnly, async (req, res, next) => {
       [boarding.trip_key],
     );
 
-    // Do not close the trip when the last passenger exits.
-    // A separate automatic trip-ending rule will handle closure.
-    // This allows the shuttle to continue accepting passengers.
+    // Complete the trip only after the final passenger exits
+    // and the shuttle has a recorded arrival at the destination.
+    if (Number(remaining.rows[0].count) === 0) {
+      await completeTripAtDestination(client, boarding.shuttle_id);
+    }
 
     await client.query('COMMIT');
 

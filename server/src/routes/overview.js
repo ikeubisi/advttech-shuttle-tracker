@@ -9,7 +9,14 @@ app.get(
       pool.query('SELECT * FROM departures ORDER BY departure_time'),
       pool.query('SELECT status FROM shuttle_state WHERE id=1'),
       pool.query(
-        'SELECT lat,lng,accuracy,created_at AS "updatedAt" FROM locations ORDER BY created_at DESC LIMIT 1',
+        `SELECT l.lat, l.lng, l.accuracy, l.created_at AS "updatedAt"
+FROM locations l
+JOIN shuttles s ON s.driver_id = l.user_id
+WHERE s.id = (
+  SELECT id FROM shuttles ORDER BY id LIMIT 1
+)
+ORDER BY l.created_at DESC, l.id DESC
+LIMIT 1`,
       ),
     ]);
     const gps = location.rows[0] || null;

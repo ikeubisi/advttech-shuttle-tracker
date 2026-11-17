@@ -5,6 +5,7 @@ import ShuttleMap from '../../components/ShuttleMap.jsx';
 
 import StatusButtons from '../../components/StatusButtons.jsx';
 import GPSButton from '../../components/GPSButton.jsx';
+import DeparturePanel from '../../components/DeparturePanel.jsx';
 export default function Driver({ data, reload }) {
   const [sharing, setSharing] = useState(false);
   const [gpsStatus, setGpsStatus] = useState('off');
@@ -170,6 +171,8 @@ export default function Driver({ data, reload }) {
       </div>
 
       {error && <p className="error">{error}</p>}
+
+      <DeparturePanel reload={reload} />
 
 
 
