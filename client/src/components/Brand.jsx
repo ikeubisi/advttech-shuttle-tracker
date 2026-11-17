@@ -1,9 +1,11 @@
-export default function Brand() {
+﻿export default function Brand() {
   return (
     <div className="brand">
-      <strong>
-        AD<span>v</span>TECH
-      </strong>
+      <img
+        src="/advtech-logo.png"
+        alt="ADvTECH"
+        className="brand-logo-image"
+      />
       <b>SHUTTLE TRACKER</b>
     </div>
   );
