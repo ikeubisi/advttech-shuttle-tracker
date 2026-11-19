@@ -1,0 +1,9 @@
+﻿{
+    "appId":  "za.co.advttech.shuttletracker",
+    "webDir":  "dist",
+    "appName":  "ADvTECH Shuttle Tracker",
+    "server":  {
+                   "androidScheme":  "https",
+                   "url":  "https://advttech-shuttle-tracker.onrender.com"
+               }
+}

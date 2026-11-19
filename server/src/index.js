@@ -15,6 +15,7 @@ import { pool } from './db.js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const app = express();
+app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.json({ limit: '20kb' }));
 app.use(cookieParser());

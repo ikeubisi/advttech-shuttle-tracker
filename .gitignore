@@ -1,77 +1,57 @@
+﻿# Dependencies
 node_modules/
-dist/
-.env
-server/.env
-*.log
+**/node_modules/
 
-# Environment secrets
-.env
-.env.*
-!.env.example
-!.env.sample
-
-# Dependencies and build output
-node_modules/
+# Build outputs
 dist/
 build/
+**/dist/
+**/build/
+
+# Environment variables and secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
 
 # Database backups
 *.backup
 *.dump
 *.sql.gz
 
-# Project backups
+# Project archives
 *.zip
 *.7z
 *.rar
 
-# Private keys and certificates
+# Certificates and private keys
 *.pem
 *.key
 *.p12
 *.pfx
 
-# Logs
+# Logs and editor settings
 *.log
-
-# Local editor files
 .vscode/
 
-# Local project backup folders
-backup-before-live-gps/
-backup-live-gps-*/
+# Local backups
 backup-*/
-
-# Local diagnostic scripts
-check-users.mjs
-
-# Historical source-code backups
+_reorganization_backup/
 *.before-*
 *.bak
 
-# Local development diagnostics
+# Local diagnostics
+check-users.mjs
 server/check-boarding-db.mjs
 server/check-shuttle-gps.mjs
-node_modules/
-**/node_modules/
-.env
-.env.*
-!.env.example
-**/.env
-**/.env.*
-!**/.env.example
-dist/
-**/dist/
-*.backup
-*.sql.gz
-*.zip
-*.log
 
-_reorganization_backup/
-
-# Files not needed for Render
-client/capacitor.config*.json
-client/assets/
-client/icon.png
+# Local production scripts
 server/start-production.ps1
-server/test-trip-direction.mjs
+
+# Capacitor generated assets
+client/assets/
+
+# Legacy root icon
+client/icon.png
