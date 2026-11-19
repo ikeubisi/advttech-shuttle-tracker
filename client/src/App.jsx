@@ -6,9 +6,9 @@ import Driver from './pages/driver/Driver.jsx';
 import Admin from './pages/admin/Admin.jsx';
 import Topbar from './components/Topbar.jsx';
 export default function App() {
-  const [user, setUser] = useState(undefined),
-    [data, setData] = useState(null),
-    [error, setError] = useState('');
+  const [user, setUser] = useState(undefined);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState('');
   useEffect(() => {
     api('/auth/me')
       .then((x) => setUser(x.user))
