@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 const marker = new L.Icon({
@@ -14,6 +14,21 @@ const shuttleIcon = L.divIcon({
   iconSize: [76, 52],
   iconAnchor: [38, 26],
 });
+function FixMapSize() {
+  const map = useMap();
+
+  useEffect(() => {
+    const refresh = () => map.invalidateSize();
+    refresh();
+
+    const observer = new ResizeObserver(refresh);
+    observer.observe(map.getContainer());
+
+    return () => observer.disconnect();
+  }, [map]);
+
+  return null;
+}
 function FollowShuttle({ gps }) {
   const map = useMap();
   useEffect(() => {
@@ -74,6 +89,7 @@ export default function ShuttleMap({ data }) {
         zoomControl={true}
         style={{ height: '100%', width: '100%' }}
       >
+        <FixMapSize />
         <TileLayer
           attribution="Tiles by Esri"
           url={
