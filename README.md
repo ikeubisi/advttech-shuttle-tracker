@@ -1,20 +1,68 @@
-# ADvTECH Shuttle Tracker — Reconstructed Project
+# ADvTECH Shuttle Tracker
 
-This is a **new reconstruction**, based on the supplied screenshots and the exact uploaded ADvTECH building photo (`client/public/building.jpeg`). It is not a recovered byte-for-byte copy of the deleted ZIP.
+A web-based shuttle management and tracking application supporting passenger, driver, and administrator workflows.
 
-## Included
-- React/Vite frontend with login, passenger, driver and administrator dashboards.
-- Exact user-provided building photograph as login background.
-- Leaflet/OpenStreetMap map, route stops and scheduled departures.
-- PostgreSQL database, session-based login, role-based access and administrator account creation.
-- Driver GPS sharing (real device GPS only) and recorded GPS history. No fake live GPS.
+## Overview
 
-## Setup in VS Code (Windows PowerShell)
+ADvTECH Shuttle Tracker provides a centralized interface for managing shuttle operations, monitoring trips, recording arrivals and departures, and viewing shuttle GPS information.
 
-1. Install Node.js 22+ and PostgreSQL.
-2. **If you already have a PostgreSQL database with accounts, back it up first and reuse that database.** Only create `advttech_shuttle` if you are starting fresh. Existing credentials will work only if the account schema and password hashes are compatible with this application.
-3. Open the extracted folder in VS Code.
-4. Run:
+Users access the application through a web browser, with interfaces tailored to their assigned roles.
+
+## Technology Stack
+
+| Component | Technology |
+|---|---|
+| Frontend | React, Vite, JavaScript |
+| Backend | Node.js, Express |
+| Database | PostgreSQL |
+| Maps | Leaflet, OpenStreetMap |
+| Development | Visual Studio Code, Git, GitHub |
+| Deployment | Cloud-hosted web application |
+
+## Application Features
+
+### Passenger
+- View shuttle information and available routes.
+- Access departure and arrival information.
+- View reported shuttle GPS positions.
+
+### Driver
+- Access assigned shuttle operations.
+- Share GPS location with browser permission.
+- Manage supported arrival and departure workflows.
+
+### Administrator
+- Access the administrative dashboard.
+- Manage supported user accounts.
+- Monitor shuttle operations and related information.
+
+## Project Structure
+
+```text
+client/             React frontend
+  src/components/   Shared interface components
+  src/pages/        Passenger, driver and admin pages
+  src/services/     Frontend API communication
+
+server/             Node.js backend
+  src/routes/       API endpoints
+  src/services/     Application business logic
+  src/database/     Database-related modules
+  migrations/       Database schema changes
+
+README.md           Project documentation
+package.json        Root project scripts
+```
+
+## Local Development
+
+### Prerequisites
+
+- Node.js 22 or later
+- PostgreSQL
+- npm
+
+### Installation
 
 ```powershell
 npm install
@@ -23,31 +71,67 @@ npm --prefix server install
 Copy-Item server/.env.example server/.env
 ```
 
-5. Edit `server/.env`: set `DATABASE_URL` to the database you intend to use. **Do not commit your `.env` file or share its password.** If existing accounts are present, do not reset them or run the seed command. Confirm schema compatibility before running migrations against an existing database.
-6. Run:
+Configure the local `server/.env` file with the appropriate database connection and application settings.
+
+Never commit credentials or production secrets to Git.
+
+### Database Setup
+
+Database migrations require technical review before use. The included scripts do not yet define a complete schema compatible with all application routes. Do not run them against production.
 
 ```powershell
-npm --prefix server run migrate
-# Only for a new database with no admin account:
-# npm --prefix server run seed
+# Migration requires schema reconciliation before execution
+```
+
+For a new database only, where appropriate:
+
+```powershell
+# Seed only after database schema compatibility is confirmed
+```
+
+Do not seed an existing production database without reviewing the script and its effects.
+
+### Start the Application
+
+```powershell
 npm run dev
 ```
 
-7. Open http://localhost:5173 and sign in with your existing compatible account, or the seeded admin account if you started a new database.
-8. From Admin → Users, create driver and passenger accounts only if they do not already exist.
+The frontend development server normally runs at `http://localhost:5173`.
 
-## GPS notes
-- Driver location comes from `navigator.geolocation.watchPosition`; drivers must consent to browser GPS permissions.
-- Mobile browsers normally require HTTPS (except localhost). A plain HTTP LAN address may not allow GPS.
-- Keep the driver's browser open; mobile background restrictions can interrupt updates.
-- The passenger map only shows a GPS position as current if it is under 90 seconds old.
-- OpenStreetMap tiles require internet unless you provide an approved offline map tile service.
-- Route coordinates and timetable are illustrative placeholders and should be verified before actual operations.
-- This is a development starter, not a production fleet tracking system. Deploy with HTTPS, privacy controls, approved tracking policies and security review.
+## GPS and Mapping
 
-## Notes
-- "Forgot password" is informational only; an administrator must manage password resets outside the app until a verified recovery flow is implemented.
-- The supplied background image is preserved unmodified.
+Driver GPS updates rely on browser geolocation permissions. Mobile devices generally require HTTPS for geolocation outside localhost.
 
-## Existing accounts / important compatibility note
-This reconstruction does **not** contain a copy of your existing PostgreSQL database, usernames or password hashes. It expects a `users` table with `username`, `display_name`, `password_hash` (bcrypt), and `role` (`admin`, `driver`, `passenger`). A prior project may have a different table schema or password format. **Back up your existing database before running `migrate`.** Do not delete tables or recreate users. If your database differs, adapt the API or migrate the schema carefully while preserving the original password hashes.
+Browser background restrictions may interrupt GPS updates. Map tiles require network access unless an approved offline tile service is configured.
+
+The application distinguishes recent GPS updates from unavailable or outdated location information.
+
+Route coordinates and schedules must be verified against operational data before relying on them.
+
+## Security and Operational Considerations
+
+- Protect database credentials and environment variables.
+- Use HTTPS in production.
+- Apply appropriate authentication and authorization controls.
+- Follow organizational location-tracking and privacy policies.
+- Review account recovery procedures before production use.
+- Verify database migrations and backup procedures.
+
+## Technical Review
+
+The repository includes application source code, database migration scripts, and backend tests for technical assessment.
+
+Reviewers should verify dependency security, database compatibility, role-based access controls, GPS behavior, and deployment configuration before making production changes.
+
+### Database Schema Compatibility
+
+The application currently relies on an existing PostgreSQL schema.
+
+The included migration and seed scripts require reconciliation with the current application queries before they can be used for a fresh installation. In particular, the authentication routes expect `email`, `name`, and `is_active` columns, while the existing migration creates `username` and `display_name`.
+
+The application also references operational tables including `shuttles`, `trips`, and `passenger_boardings` that are not fully defined by the included migration scripts.
+
+Before deploying a new environment, verify the complete database schema, required constraints, and migration order.
+
+Do not execute migrations or seed scripts against a production database without a reviewed backup and deployment plan.
