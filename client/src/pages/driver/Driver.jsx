@@ -1,24 +1,24 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { MapPin, CheckCircle2, Info } from 'lucide-react';
-import { api } from '../../services/api.js';
-import ShuttleMap from '../../components/ShuttleMap.jsx';
+import React, { useEffect, useState, useRef } from "react";
+import { MapPin, CheckCircle2, Info } from "lucide-react";
+import { api } from "../../services/api.js";
+import ShuttleMap from "../../components/ShuttleMap.jsx";
 
-import StatusButtons from '../../components/StatusButtons.jsx';
-import GPSButton from '../../components/GPSButton.jsx';
-import DeparturePanel from '../../components/DeparturePanel.jsx';
+import StatusButtons from "../../components/StatusButtons.jsx";
+import GPSButton from "../../components/GPSButton.jsx";
+import DeparturePanel from "../../components/DeparturePanel.jsx";
 export default function Driver({ data, reload }) {
   const [sharing, setSharing] = useState(false);
-  const [gpsStatus, setGpsStatus] = useState('off');
-  const [error, setError] = useState('');
+  const [gpsStatus, setGpsStatus] = useState("off");
+  const [error, setError] = useState("");
   const [lastSent, setLastSent] = useState(null);
-  const [streetName, setStreetName] = useState('');
+  const [streetName, setStreetName] = useState("");
   const lastLookup = useRef(0);
   const watch = useRef(null);
 
   useEffect(() => {
     const gps = data?.location;
     if (!gps?.lat || !gps?.lng) {
-      setStreetName('');
+      setStreetName("");
       return;
     }
 
@@ -33,7 +33,7 @@ export default function Driver({ data, reload }) {
       { signal: controller.signal },
     )
       .then((r) => {
-        if (!r.ok) throw new Error('Street lookup unavailable');
+        if (!r.ok) throw new Error("Street lookup unavailable");
         return r.json();
       })
       .then((result) => {
@@ -44,11 +44,11 @@ export default function Driver({ data, reload }) {
             a.residential ||
             a.suburb ||
             a.neighbourhood ||
-            'Street name unavailable',
+            "Street name unavailable",
         );
       })
       .catch((e) => {
-        if (e.name !== 'AbortError') setStreetName('Street name unavailable');
+        if (e.name !== "AbortError") setStreetName("Street name unavailable");
       });
 
     return () => controller.abort();
@@ -62,13 +62,14 @@ export default function Driver({ data, reload }) {
       watch.current = null;
     }
     setSharing(false);
-    setGpsStatus('off');
+    setGpsStatus("off");
   }
 
   useEffect(
     () => () => {
       active.current = false;
-      if (watch.current !== null) navigator.geolocation?.clearWatch(watch.current);
+      if (watch.current !== null)
+        navigator.geolocation?.clearWatch(watch.current);
     },
     [],
   );
@@ -80,14 +81,14 @@ export default function Driver({ data, reload }) {
     }
 
     if (!navigator.geolocation) {
-      setError('Geolocation is not supported on this device.');
-      setGpsStatus('error');
+      setError("Geolocation is not supported on this device.");
+      setGpsStatus("error");
       return;
     }
 
-    setError('');
+    setError("");
     setLastSent(null);
-    setGpsStatus('waiting');
+    setGpsStatus("waiting");
     setSharing(true);
     active.current = true;
 
@@ -95,8 +96,8 @@ export default function Driver({ data, reload }) {
       async (p) => {
         if (!active.current) return;
         try {
-          await api('/driver/location', {
-            method: 'POST',
+          await api("/driver/location", {
+            method: "POST",
             body: JSON.stringify({
               lat: p.coords.latitude,
               lng: p.coords.longitude,
@@ -106,19 +107,19 @@ export default function Driver({ data, reload }) {
 
           if (!active.current) return;
           setLastSent(new Date().toLocaleTimeString());
-          setGpsStatus('active');
-          setError('');
+          setGpsStatus("active");
+          setError("");
           reload();
         } catch (e) {
           if (!active.current) return;
-          setGpsStatus('error');
-          setError('GPS upload failed: ' + e.message);
+          setGpsStatus("error");
+          setError("GPS upload failed: " + e.message);
         }
       },
       (e) => {
         if (!active.current) return;
-        setGpsStatus('error');
-        setError('Android GPS error: ' + e.message);
+        setGpsStatus("error");
+        setError("Android GPS error: " + e.message);
       },
       {
         enableHighAccuracy: true,
@@ -130,8 +131,8 @@ export default function Driver({ data, reload }) {
 
   async function status(s) {
     try {
-      await api('/driver/status', {
-        method: 'POST',
+      await api("/driver/status", {
+        method: "POST",
         body: JSON.stringify({ status: s }),
       });
       reload();
@@ -150,22 +151,24 @@ export default function Driver({ data, reload }) {
 
       <GPSButton sharing={sharing} onToggle={toggle} />
 
-      <div className={'gps-message ' + (gpsStatus === 'active' ? 'active' : '')}>
+      <div
+        className={"gps-message " + (gpsStatus === "active" ? "active" : "")}
+      >
         <CheckCircle2 size={24} />
         <div>
           <b>
-            {gpsStatus === 'off'
-              ? 'GPS Sharing OFF'
-              : gpsStatus === 'waiting'
-                ? 'Waiting for Android GPS'
-                : gpsStatus === 'active'
-                  ? 'GPS Upload Successful'
-                  : 'GPS Sharing Error'}
+            {gpsStatus === "off"
+              ? "GPS Sharing OFF"
+              : gpsStatus === "waiting"
+                ? "Waiting for Android GPS"
+                : gpsStatus === "active"
+                  ? "GPS Upload Successful"
+                  : "GPS Sharing Error"}
           </b>
           <small>
             {lastSent
-              ? 'Last successful upload: ' + lastSent
-              : 'Waiting for a confirmed location upload'}
+              ? "Last successful upload: " + lastSent
+              : "Waiting for a confirmed location upload"}
           </small>
         </div>
       </div>
@@ -174,8 +177,6 @@ export default function Driver({ data, reload }) {
 
       <DeparturePanel reload={reload} />
 
-
-
       <section className="panel" style={{ marginTop: 20 }}>
         <h3>Passengers On Board ({data?.counts?.onboard ?? 0})</h3>
         <p>Registered passengers currently travelling on your shuttle.</p>
@@ -183,15 +184,23 @@ export default function Driver({ data, reload }) {
         {!data?.onboardUsers?.length ? (
           <p>No passengers currently on board.</p>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr>
-                  <th style={{ padding: 12, textAlign: 'left' }}>Registered Name</th>
-                  <th style={{ padding: 12, textAlign: 'left' }}>Boarding Stop</th>
-                  <th style={{ padding: 12, textAlign: 'left' }}>Destination</th>
-                  <th style={{ padding: 12, textAlign: 'left' }}>Boarding Time</th>
-                  <th style={{ padding: 12, textAlign: 'left' }}>Status</th>
+                  <th style={{ padding: 12, textAlign: "left" }}>
+                    Registered Name
+                  </th>
+                  <th style={{ padding: 12, textAlign: "left" }}>
+                    Boarding Stop
+                  </th>
+                  <th style={{ padding: 12, textAlign: "left" }}>
+                    Destination
+                  </th>
+                  <th style={{ padding: 12, textAlign: "left" }}>
+                    Boarding Time
+                  </th>
+                  <th style={{ padding: 12, textAlign: "left" }}>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -219,8 +228,8 @@ export default function Driver({ data, reload }) {
 
       <p className="safety">
         <Info size={20} />
-        Keep this page open while driving. Use a mounted device and do not operate it while the
-        vehicle is moving.
+        Keep this page open while driving. Use a mounted device and do not
+        operate it while the vehicle is moving.
       </p>
 
       <div className="location-box">
@@ -228,12 +237,14 @@ export default function Driver({ data, reload }) {
         <div>
           <b>Current Location</b>
           <div style={{ marginTop: 6, fontWeight: 600 }}>
-            {data?.location ? streetName || 'Finding street name...' : 'Waiting for GPS signal'}
+            {data?.location
+              ? streetName || "Finding street name..."
+              : "Waiting for GPS signal"}
           </div>
           <small>
             {data?.location
               ? `Lat: ${Number(data.location.lat).toFixed(5)}, Lng: ${Number(data.location.lng).toFixed(5)}`
-              : 'GPS coordinates unavailable'}
+              : "GPS coordinates unavailable"}
           </small>
         </div>
       </div>

@@ -1,15 +1,15 @@
-import { calculateDepartureState } from './departure-rules.js';
+import { calculateDepartureState } from "./departure-rules.js";
 
 export async function getDepartureState(client, shuttleId) {
   const shuttleIdNumber = Number(shuttleId);
 
   if (!Number.isSafeInteger(shuttleIdNumber) || shuttleIdNumber <= 0) {
-    throw new Error('Invalid shuttle ID');
+    throw new Error("Invalid shuttle ID");
   }
 
   // Serialize updates for this shuttle to avoid conflicting readiness writes.
   const shuttleResult = await client.query(
-    'SELECT id FROM shuttles WHERE id=$1 FOR UPDATE',
+    "SELECT id FROM shuttles WHERE id=$1 FOR UPDATE",
     [shuttleIdNumber],
   );
 
@@ -42,7 +42,7 @@ export async function getDepartureState(client, shuttleId) {
        AND origin_stop_id=$2
        AND boarded_at >= $3`,
     [
-      visit.trip_id === null ? '__no_trip__' : `trip-${visit.trip_id}`,
+      visit.trip_id === null ? "__no_trip__" : `trip-${visit.trip_id}`,
       visit.stop_id,
       visit.arrived_at,
     ],
@@ -100,15 +100,15 @@ export async function getDepartureStateWithTransaction(pool, shuttleId) {
   const client = await pool.connect();
 
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
 
     const state = await getDepartureState(client, shuttleId);
 
-    await client.query('COMMIT');
+    await client.query("COMMIT");
 
     return state;
   } catch (error) {
-    await client.query('ROLLBACK');
+    await client.query("ROLLBACK");
     throw error;
   } finally {
     client.release();

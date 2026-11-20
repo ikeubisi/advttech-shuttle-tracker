@@ -1,7 +1,7 @@
-import { getAssignedDriverGps } from './driver-gps.js';
-import { confirmStopArrival } from './stop-arrival.js';
-import { startStopVisit } from './stop-visit.js';
-import { checkTripSafety } from './trip-safety.js';
+import { getAssignedDriverGps } from "./driver-gps.js";
+import { confirmStopArrival } from "./stop-arrival.js";
+import { startStopVisit } from "./stop-visit.js";
+import { checkTripSafety } from "./trip-safety.js";
 
 export async function processStopArrival(client, shuttleId) {
   const shuttleResult = await client.query(
@@ -15,7 +15,7 @@ export async function processStopArrival(client, shuttleId) {
   const shuttle = shuttleResult.rows[0];
 
   if (!shuttle) {
-    throw new Error('Shuttle not found');
+    throw new Error("Shuttle not found");
   }
 
   const activeResult = await client.query(
@@ -29,7 +29,7 @@ export async function processStopArrival(client, shuttleId) {
   if (activeResult.rows.length) {
     return {
       arrived: false,
-      reason: 'Existing stop visit must be completed first',
+      reason: "Existing stop visit must be completed first",
       visit: activeResult.rows[0],
     };
   }
@@ -44,13 +44,15 @@ export async function processStopArrival(client, shuttleId) {
     };
   }
 
-  const { previousGps, currentGps } =
-    await getAssignedDriverGps(client, shuttle.id);
+  const { previousGps, currentGps } = await getAssignedDriverGps(
+    client,
+    shuttle.id,
+  );
 
   if (!previousGps || !currentGps) {
     return {
       arrived: false,
-      reason: 'Two driver GPS readings required',
+      reason: "Two driver GPS readings required",
     };
   }
 
@@ -100,12 +102,12 @@ export async function processStopArrival(client, shuttleId) {
       arrived: true,
       stopId: stop.id,
       visit,
-      reason: 'GPS-confirmed stop arrival',
+      reason: "GPS-confirmed stop arrival",
     };
   }
 
   return {
     arrived: false,
-    reason: 'Shuttle has not arrived at a route stop',
+    reason: "Shuttle has not arrived at a route stop",
   };
 }

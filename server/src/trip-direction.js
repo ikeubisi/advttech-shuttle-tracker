@@ -1,1 +1,1 @@
-export * from './services/trip-direction.js';
+export * from "./services/trip-direction.js";

@@ -1,18 +1,20 @@
-export async function linkTripToActiveVisit(client, {
-  shuttleId,
-  stopId,
-  tripId,
-}) {
+export async function linkTripToActiveVisit(
+  client,
+  { shuttleId, stopId, tripId },
+) {
   const shuttle = Number(shuttleId);
   const stop = Number(stopId);
   const trip = Number(tripId);
 
   if (
-    !Number.isSafeInteger(shuttle) || shuttle <= 0 ||
-    !Number.isSafeInteger(stop) || stop <= 0 ||
-    !Number.isSafeInteger(trip) || trip <= 0
+    !Number.isSafeInteger(shuttle) ||
+    shuttle <= 0 ||
+    !Number.isSafeInteger(stop) ||
+    stop <= 0 ||
+    !Number.isSafeInteger(trip) ||
+    trip <= 0
   ) {
-    throw new Error('Invalid trip-to-visit information');
+    throw new Error("Invalid trip-to-visit information");
   }
 
   const result = await client.query(
@@ -41,7 +43,7 @@ export async function linkTripToActiveVisit(client, {
   if (!result.rowCount) {
     return {
       linked: false,
-      reason: 'No compatible active stop visit',
+      reason: "No compatible active stop visit",
     };
   }
 

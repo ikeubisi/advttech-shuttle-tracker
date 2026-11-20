@@ -1,15 +1,13 @@
-﻿import { confirmStopDeparture } from './stop-departure.js';
+﻿import { confirmStopDeparture } from "./stop-departure.js";
 
-export async function recordVerifiedDeparture(client, {
-  visitId,
-  previousGps,
-  currentGps,
-  stop,
-}) {
+export async function recordVerifiedDeparture(
+  client,
+  { visitId, previousGps, currentGps, stop },
+) {
   const id = Number(visitId);
 
   if (!Number.isSafeInteger(id) || id <= 0) {
-    throw new Error('Invalid stop visit ID');
+    throw new Error("Invalid stop visit ID");
   }
 
   // Lock the stop visit to prevent duplicate departure updates.
@@ -22,7 +20,7 @@ export async function recordVerifiedDeparture(client, {
   );
 
   if (!result.rowCount) {
-    throw new Error('Stop visit not found');
+    throw new Error("Stop visit not found");
   }
 
   const visit = result.rows[0];
@@ -31,7 +29,7 @@ export async function recordVerifiedDeparture(client, {
     return {
       updated: false,
       departedAt: visit.departed_at,
-      reason: 'Departure already recorded',
+      reason: "Departure already recorded",
     };
   }
 
@@ -39,7 +37,7 @@ export async function recordVerifiedDeparture(client, {
     return {
       updated: false,
       departedAt: null,
-      reason: 'Driver confirmation required',
+      reason: "Driver confirmation required",
     };
   }
 
@@ -69,6 +67,6 @@ export async function recordVerifiedDeparture(client, {
   return {
     updated: updated.rowCount > 0,
     departedAt: updated.rows[0]?.departed_at ?? null,
-    reason: 'GPS-verified departure recorded',
+    reason: "GPS-verified departure recorded",
   };
 }

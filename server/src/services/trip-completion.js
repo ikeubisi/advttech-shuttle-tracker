@@ -1,10 +1,10 @@
-import { getActiveTrip } from './active-trip.js';
+import { getActiveTrip } from "./active-trip.js";
 
 export async function completeTripAtDestination(client, shuttleId) {
   const id = Number(shuttleId);
 
   if (!Number.isSafeInteger(id) || id <= 0) {
-    throw new Error('Invalid shuttle ID');
+    throw new Error("Invalid shuttle ID");
   }
 
   // Caller must use BEGIN/COMMIT on this same client.
@@ -15,7 +15,7 @@ export async function completeTripAtDestination(client, shuttleId) {
   );
 
   if (!shuttleLock.rowCount) {
-    throw new Error('Shuttle not found');
+    throw new Error("Shuttle not found");
   }
 
   const trips = await getActiveTrip(client, id);
@@ -23,14 +23,14 @@ export async function completeTripAtDestination(client, shuttleId) {
   if (trips.length === 0) {
     return {
       completed: false,
-      reason: 'No unfinished trip',
+      reason: "No unfinished trip",
     };
   }
 
   if (trips.length !== 1) {
     return {
       completed: false,
-      reason: 'Multiple unfinished trips require review',
+      reason: "Multiple unfinished trips require review",
     };
   }
 
@@ -52,7 +52,7 @@ export async function completeTripAtDestination(client, shuttleId) {
   if (!visitResult.rowCount) {
     return {
       completed: false,
-      reason: 'Destination arrival not confirmed',
+      reason: "Destination arrival not confirmed",
     };
   }
 
@@ -67,7 +67,7 @@ export async function completeTripAtDestination(client, shuttleId) {
   if (Number(onboardResult.rows[0]?.count) !== 0) {
     return {
       completed: false,
-      reason: 'Passengers are still onboard',
+      reason: "Passengers are still onboard",
     };
   }
 
@@ -84,7 +84,7 @@ export async function completeTripAtDestination(client, shuttleId) {
     completed: result.rowCount === 1,
     tripId: trip.id,
     reason: result.rowCount
-      ? 'Trip completed at destination'
-      : 'Trip already completed',
+      ? "Trip completed at destination"
+      : "Trip already completed",
   };
 }

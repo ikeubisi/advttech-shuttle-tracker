@@ -13,11 +13,11 @@ export function calculateDepartureState({
   const arrivalTime = new Date(arrivedAt).getTime();
 
   if (!Number.isFinite(arrivalTime)) {
-    throw new Error('Invalid shuttle arrival timestamp');
+    throw new Error("Invalid shuttle arrival timestamp");
   }
 
   if (!Number.isSafeInteger(passengerCount) || passengerCount < 0) {
-    throw new Error('Invalid passenger count');
+    throw new Error("Invalid passenger count");
   }
 
   const elapsedMs = Math.max(0, now - arrivalTime);
@@ -27,14 +27,14 @@ export function calculateDepartureState({
   const waitingExpired = elapsedMs >= WAITING_MS;
   const ready = Boolean(readyAt) || thresholdReached || waitingExpired;
 
-  let status = 'Waiting';
+  let status = "Waiting";
 
   if (departedAt) {
-    status = 'Departed';
+    status = "Departed";
   } else if (driverConfirmedAt) {
-    status = 'Awaiting GPS Departure';
+    status = "Awaiting GPS Departure";
   } else if (ready) {
-    status = 'Awaiting Driver Confirmation';
+    status = "Awaiting Driver Confirmation";
   }
 
   return {
@@ -47,9 +47,9 @@ export function calculateDepartureState({
     readyReason: readyAt
       ? null
       : thresholdReached
-        ? 'passenger_threshold'
+        ? "passenger_threshold"
         : waitingExpired
-          ? 'waiting_timeout'
+          ? "waiting_timeout"
           : null,
     requiresDriverConfirmation: ready && !driverConfirmedAt && !departedAt,
   };

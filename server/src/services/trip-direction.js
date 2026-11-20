@@ -1,22 +1,22 @@
 ﻿export function detectTripDirection(originStopId, stops) {
   if (!Number.isSafeInteger(originStopId)) {
-    throw new Error('Invalid boarding stop');
+    throw new Error("Invalid boarding stop");
   }
 
   if (!Array.isArray(stops) || stops.length !== 2) {
-    throw new Error('Two stops are required');
+    throw new Error("Two stops are required");
   }
 
   const origin = stops.find((stop) => Number(stop.id) === originStopId);
 
   if (!origin) {
-    throw new Error('Boarding stop not found');
+    throw new Error("Boarding stop not found");
   }
 
   const destination = stops.find((stop) => Number(stop.id) !== originStopId);
 
   if (!destination) {
-    throw new Error('Destination stop not found');
+    throw new Error("Destination stop not found");
   }
 
   return {

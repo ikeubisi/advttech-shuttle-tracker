@@ -2,7 +2,7 @@
   const id = Number(shuttleId);
 
   if (!Number.isSafeInteger(id) || id <= 0) {
-    throw new Error('Invalid shuttle ID');
+    throw new Error("Invalid shuttle ID");
   }
 
   const result = await client.query(

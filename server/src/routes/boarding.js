@@ -1,18 +1,18 @@
-import { completeTripAtDestination } from '../services/trip-completion.js';
-import { Router } from 'express';
-import { pool } from '../database/db.js';
-import { verifyGps, validCoordinates } from '../services/boarding-gps.js';
-import { linkTripToActiveVisit } from '../services/link-trip-to-visit.js';
+import { completeTripAtDestination } from "../services/trip-completion.js";
+import { Router } from "express";
+import { pool } from "../database/db.js";
+import { verifyGps, validCoordinates } from "../services/boarding-gps.js";
+import { linkTripToActiveVisit } from "../services/link-trip-to-visit.js";
 
 export const boardingRouter = Router();
 
 function passengerOnly(req, res, next) {
   if (!req.user) {
-    return res.status(401).json({ error: 'Please sign in' });
+    return res.status(401).json({ error: "Please sign in" });
   }
 
-  if (req.user.role !== 'passenger') {
-    return res.status(403).json({ error: 'Passenger access only' });
+  if (req.user.role !== "passenger") {
+    return res.status(403).json({ error: "Passenger access only" });
   }
 
   next();
@@ -23,9 +23,9 @@ function gpsInput(body) {
 
   if (
     !validCoordinates(lat, lng) ||
-    typeof accuracy !== 'number' ||
+    typeof accuracy !== "number" ||
     !Number.isFinite(accuracy) ||
-    typeof timestamp !== 'number' ||
+    typeof timestamp !== "number" ||
     !Number.isFinite(timestamp)
   ) {
     return null;
@@ -60,7 +60,7 @@ async function latestShuttleGps(client, driverId) {
 
 async function stopById(client, stopId) {
   const result = await client.query(
-    'SELECT id, route_id, lat, lng, stop_order FROM stops WHERE id=$1',
+    "SELECT id, route_id, lat, lng, stop_order FROM stops WHERE id=$1",
     [stopId],
   );
 
@@ -75,18 +75,18 @@ async function stopById(client, stopId) {
     : null;
 }
 
-boardingRouter.post('/board', passengerOnly, async (req, res, next) => {
+boardingRouter.post("/board", passengerOnly, async (req, res, next) => {
   const passenger = gpsInput(req.body);
   const stopId = Number(req.body?.stopId);
 
   if (!passenger || !Number.isSafeInteger(stopId) || stopId <= 0) {
-    return res.status(400).json({ error: 'Invalid boarding request' });
+    return res.status(400).json({ error: "Invalid boarding request" });
   }
 
   const client = await pool.connect();
 
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
 
     const shuttleResult = await client.query(
       `
@@ -105,21 +105,21 @@ boardingRouter.post('/board', passengerOnly, async (req, res, next) => {
     const shuttle = shuttleResult.rows[0];
 
     if (!shuttle || !shuttle.driver_id) {
-      await client.query('ROLLBACK');
-      return res.status(409).json({ error: 'No assigned shuttle available' });
+      await client.query("ROLLBACK");
+      return res.status(409).json({ error: "No assigned shuttle available" });
     }
 
-    if (shuttle.status === 'Out of Service') {
-      await client.query('ROLLBACK');
-      return res.status(409).json({ error: 'Shuttle is out of service' });
+    if (shuttle.status === "Out of Service") {
+      await client.query("ROLLBACK");
+      return res.status(409).json({ error: "Shuttle is out of service" });
     }
 
     const stop = await stopById(client, stopId);
     const shuttleGps = await latestShuttleGps(client, shuttle.driver_id);
 
     if (!stop || !shuttleGps) {
-      await client.query('ROLLBACK');
-      return res.status(409).json({ error: 'Stop or shuttle GPS unavailable' });
+      await client.query("ROLLBACK");
+      return res.status(409).json({ error: "Stop or shuttle GPS unavailable" });
     }
 
     const verification = verifyGps({
@@ -129,7 +129,7 @@ boardingRouter.post('/board', passengerOnly, async (req, res, next) => {
     });
 
     if (!verification.ok) {
-      await client.query('ROLLBACK');
+      await client.query("ROLLBACK");
       return res.status(409).json({ error: verification.error });
     }
 
@@ -144,8 +144,8 @@ boardingRouter.post('/board', passengerOnly, async (req, res, next) => {
     );
 
     if (active.rowCount) {
-      await client.query('ROLLBACK');
-      return res.status(409).json({ error: 'You are already onboard' });
+      await client.query("ROLLBACK");
+      return res.status(409).json({ error: "You are already onboard" });
     }
 
     const destinationResult = await client.query(
@@ -160,8 +160,8 @@ boardingRouter.post('/board', passengerOnly, async (req, res, next) => {
     );
 
     if (!destinationResult.rowCount) {
-      await client.query('ROLLBACK');
-      return res.status(409).json({ error: 'No destination stop configured' });
+      await client.query("ROLLBACK");
+      return res.status(409).json({ error: "No destination stop configured" });
     }
 
     let trip = await client.query(
@@ -178,11 +178,12 @@ boardingRouter.post('/board', passengerOnly, async (req, res, next) => {
     if (trip.rowCount) {
       if (
         Number(trip.rows[0].origin_stop_id) !== Number(stop.id) ||
-        Number(trip.rows[0].destination_stop_id) !== Number(destinationResult.rows[0].id)
+        Number(trip.rows[0].destination_stop_id) !==
+          Number(destinationResult.rows[0].id)
       ) {
-        await client.query('ROLLBACK');
+        await client.query("ROLLBACK");
         return res.status(409).json({
-          error: 'The shuttle has an active trip in another direction',
+          error: "The shuttle has an active trip in another direction",
         });
       }
     } else {
@@ -209,9 +210,9 @@ boardingRouter.post('/board', passengerOnly, async (req, res, next) => {
     });
 
     if (!link.linked) {
-      await client.query('ROLLBACK');
+      await client.query("ROLLBACK");
       return res.status(409).json({
-        error: 'No active stop visit available for boarding',
+        error: "No active stop visit available for boarding",
       });
     }
 
@@ -228,33 +229,33 @@ boardingRouter.post('/board', passengerOnly, async (req, res, next) => {
       [req.user.id, stop.id, destinationResult.rows[0].id, tripKey],
     );
 
-    await client.query('COMMIT');
+    await client.query("COMMIT");
 
     res.status(201).json({
       ok: true,
-      message: 'Boarding confirmed',
+      message: "Boarding confirmed",
       boarding: boarding.rows[0],
       tripKey,
     });
   } catch (error) {
-    await client.query('ROLLBACK');
+    await client.query("ROLLBACK");
     next(error);
   } finally {
     client.release();
   }
 });
 
-boardingRouter.post('/exit', passengerOnly, async (req, res, next) => {
+boardingRouter.post("/exit", passengerOnly, async (req, res, next) => {
   const passenger = gpsInput(req.body);
 
   if (!passenger) {
-    return res.status(400).json({ error: 'Invalid GPS request' });
+    return res.status(400).json({ error: "Invalid GPS request" });
   }
 
   const client = await pool.connect();
 
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
 
     // Identify the shuttle before acquiring row locks.
     const shuttleLookup = await client.query(
@@ -266,11 +267,12 @@ boardingRouter.post('/exit', passengerOnly, async (req, res, next) => {
     );
 
     if (shuttleLookup.rowCount !== 1) {
-      await client.query('ROLLBACK');
+      await client.query("ROLLBACK");
       return res.status(409).json({
-        error: shuttleLookup.rowCount === 0
-          ? 'You are not currently onboard'
-          : 'Multiple active shuttle boardings require review',
+        error:
+          shuttleLookup.rowCount === 0
+            ? "You are not currently onboard"
+            : "Multiple active shuttle boardings require review",
       });
     }
 
@@ -281,7 +283,7 @@ boardingRouter.post('/exit', passengerOnly, async (req, res, next) => {
     );
 
     if (!shuttleLock.rowCount) {
-      throw new Error('Boarding shuttle not found');
+      throw new Error("Boarding shuttle not found");
     }
 
     const active = await client.query(
@@ -299,8 +301,8 @@ boardingRouter.post('/exit', passengerOnly, async (req, res, next) => {
     );
 
     if (!active.rowCount) {
-      await client.query('ROLLBACK');
-      return res.status(409).json({ error: 'You are not currently onboard' });
+      await client.query("ROLLBACK");
+      return res.status(409).json({ error: "You are not currently onboard" });
     }
 
     const boarding = active.rows[0];
@@ -309,8 +311,8 @@ boardingRouter.post('/exit', passengerOnly, async (req, res, next) => {
     const shuttleGps = await latestShuttleGps(client, boarding.driver_id);
 
     if (!stop || !shuttleGps) {
-      await client.query('ROLLBACK');
-      return res.status(409).json({ error: 'Destination GPS unavailable' });
+      await client.query("ROLLBACK");
+      return res.status(409).json({ error: "Destination GPS unavailable" });
     }
 
     const verification = verifyGps({
@@ -320,7 +322,7 @@ boardingRouter.post('/exit', passengerOnly, async (req, res, next) => {
     });
 
     if (!verification.ok) {
-      await client.query('ROLLBACK');
+      await client.query("ROLLBACK");
       return res.status(409).json({ error: verification.error });
     }
 
@@ -348,14 +350,14 @@ boardingRouter.post('/exit', passengerOnly, async (req, res, next) => {
       await completeTripAtDestination(client, boarding.shuttle_id);
     }
 
-    await client.query('COMMIT');
+    await client.query("COMMIT");
 
     res.json({
       ok: true,
-      message: 'Exit confirmed',
+      message: "Exit confirmed",
     });
   } catch (error) {
-    await client.query('ROLLBACK');
+    await client.query("ROLLBACK");
     next(error);
   } finally {
     client.release();

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { api } from '../services/api.js';
+import React, { useEffect, useState } from "react";
+import { api } from "../services/api.js";
 export default function BoardingPanel({ data, reload }) {
-  const [origin, setOrigin] = useState(''),
-    [message, setMessage] = useState(''),
+  const [origin, setOrigin] = useState(""),
+    [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false);
   const stops = data?.stops || [];
   useEffect(() => {
@@ -10,11 +10,11 @@ export default function BoardingPanel({ data, reload }) {
   }, [stops.length]);
   async function send(kind) {
     if (!navigator.geolocation) {
-      setMessage('GPS is not supported');
+      setMessage("GPS is not supported");
       return;
     }
     setBusy(true);
-    setMessage('Checking phone GPS...');
+    setMessage("Checking phone GPS...");
     navigator.geolocation.getCurrentPosition(
       async (p) => {
         try {
@@ -23,13 +23,13 @@ export default function BoardingPanel({ data, reload }) {
             lng: p.coords.longitude,
             accuracy: p.coords.accuracy,
             timestamp: p.timestamp,
-            ...(kind === 'board' ? { stopId: Number(origin) } : {}),
+            ...(kind === "board" ? { stopId: Number(origin) } : {}),
           };
-          const result = await api('/passenger/' + kind, {
-            method: 'POST',
+          const result = await api("/passenger/" + kind, {
+            method: "POST",
             body: JSON.stringify(body),
           });
-          setMessage(result.message || 'Confirmed');
+          setMessage(result.message || "Confirmed");
           reload();
         } catch (e) {
           setMessage(e.message);
@@ -48,11 +48,11 @@ export default function BoardingPanel({ data, reload }) {
     <section className="panel boarding-panel">
       <h3>My shuttle journey</h3>
       <p>
-        Check in only after physically boarding. Your phone and the shuttle must be at the same
-        stop.
+        Check in only after physically boarding. Your phone and the shuttle must
+        be at the same stop.
       </p>
       <label>
-        Boarding stop{' '}
+        Boarding stop{" "}
         <select value={origin} onChange={(e) => setOrigin(e.target.value)}>
           {stops.map((s) => (
             <option value={s.id} key={s.id}>
@@ -62,17 +62,23 @@ export default function BoardingPanel({ data, reload }) {
         </select>
       </label>
       <div className="boarding-actions">
-        <button disabled={busy || !origin || !!data?.myBoarding} onClick={() => send('board')}>
+        <button
+          disabled={busy || !origin || !!data?.myBoarding}
+          onClick={() => send("board")}
+        >
           Confirm boarding
         </button>
-        <button disabled={busy || !data?.myBoarding} onClick={() => send('exit')}>
+        <button
+          disabled={busy || !data?.myBoarding}
+          onClick={() => send("exit")}
+        >
           Confirm exit
         </button>
       </div>
       <p>
         {data?.myBoarding
-          ? 'You are checked in. Confirm exit at the destination.'
-          : 'You are not currently checked in.'}
+          ? "You are checked in. Confirm exit at the destination."
+          : "You are not currently checked in."}
       </p>
       {message && <p role="status">{message}</p>}
     </section>

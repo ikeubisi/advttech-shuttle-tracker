@@ -1,6 +1,6 @@
-﻿import { getAssignedShuttles } from './assigned-shuttle.js';
-import { getAssignedDriverGps } from './driver-gps.js';
-import { recordVerifiedDeparture } from './record-departure.js';
+﻿import { getAssignedShuttles } from "./assigned-shuttle.js";
+import { getAssignedDriverGps } from "./driver-gps.js";
+import { recordVerifiedDeparture } from "./record-departure.js";
 
 export async function processDriverDepartures(client, driverId) {
   const shuttles = await getAssignedShuttles(client, driverId);
@@ -36,11 +36,13 @@ export async function processDriverDepartures(client, driverId) {
     );
 
     if (!stopResult.rowCount) {
-      throw new Error('Stop not found for active visit');
+      throw new Error("Stop not found for active visit");
     }
 
-    const { previousGps, currentGps } =
-      await getAssignedDriverGps(client, shuttle.id);
+    const { previousGps, currentGps } = await getAssignedDriverGps(
+      client,
+      shuttle.id,
+    );
 
     const departure = await recordVerifiedDeparture(client, {
       visitId: visit.id,

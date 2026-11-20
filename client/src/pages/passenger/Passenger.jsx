@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React from "react";
 import {
   BusFront,
   CalendarDays,
@@ -6,12 +6,12 @@ import {
   Navigation,
   Clock3,
   Wifi,
-  ShieldCheck
-} from 'lucide-react';
+  ShieldCheck,
+} from "lucide-react";
 
-import ShuttleMap from '../../components/ShuttleMap.jsx';
-import ArrivalPanel from '../../components/ArrivalPanel.jsx';
-import BoardingPanel from '../../components/BoardingPanel.jsx';
+import ShuttleMap from "../../components/ShuttleMap.jsx";
+import ArrivalPanel from "../../components/ArrivalPanel.jsx";
+import BoardingPanel from "../../components/BoardingPanel.jsx";
 
 export default function Passenger({ data, reload }) {
   const gpsAvailable = Boolean(data?.location);
@@ -19,7 +19,6 @@ export default function Passenger({ data, reload }) {
 
   return (
     <main className="passenger content passenger-premium">
-
       <section className="passenger-hero">
         <div className="passenger-hero-shade" />
 
@@ -32,15 +31,15 @@ export default function Passenger({ data, reload }) {
             />
           </div>
 
-          <span className="passenger-eyebrow">
-            SHUTTLE TRACKER
-          </span>
+          <span className="passenger-eyebrow">SHUTTLE TRACKER</span>
 
-          <h1>Your journey,<br />made easier.</h1>
+          <h1>
+            Your journey,
+            <br />
+            made easier.
+          </h1>
 
-          <p>
-            Welcome to your ADvTECH passenger journey.
-          </p>
+          <p>Welcome to your ADvTECH passenger journey.</p>
         </div>
       </section>
 
@@ -50,9 +49,11 @@ export default function Passenger({ data, reload }) {
           <h2>Live shuttle tracking</h2>
           <p>See your shuttle and follow your route.</p>
         </div>
-        <div className={`gps-indicator ${gpsAvailable ? 'gps-online' : 'gps-offline'}`}>
+        <div
+          className={`gps-indicator ${gpsAvailable ? "gps-online" : "gps-offline"}`}
+        >
           <span />
-          {gpsAvailable ? 'GPS LIVE' : 'GPS WAITING'}
+          {gpsAvailable ? "GPS LIVE" : "GPS WAITING"}
         </div>
       </section>
 
@@ -60,11 +61,11 @@ export default function Passenger({ data, reload }) {
         <div className="quantum-status-top">
           <div>
             <span className="quantum-label">SHUTTLE STATUS</span>
-            <h2>{data?.status || 'Awaiting update'}</h2>
+            <h2>{data?.status || "Awaiting update"}</h2>
             <p>
               {gpsAvailable
-                ? 'Driver location received'
-                : 'Waiting for driver GPS'}
+                ? "Driver location received"
+                : "Waiting for driver GPS"}
             </p>
           </div>
 
@@ -77,8 +78,8 @@ export default function Passenger({ data, reload }) {
         <div className="quantum-status-footer">
           <Wifi size={16} />
           {gpsAvailable
-            ? 'Live location available'
-            : 'Location will appear when GPS is received'}
+            ? "Live location available"
+            : "Location will appear when GPS is received"}
         </div>
       </section>
 
@@ -96,7 +97,7 @@ export default function Passenger({ data, reload }) {
           <div>
             <small>FROM</small>
             <strong>
-              {data?.route?.start_name || 'Sandton Gautrain Station'}
+              {data?.route?.start_name || "Sandton Gautrain Station"}
             </strong>
           </div>
         </div>
@@ -107,9 +108,7 @@ export default function Passenger({ data, reload }) {
           <span className="route-destination-dot" />
           <div>
             <small>TO</small>
-            <strong>
-              {data?.route?.end_name || 'ADvTECH Waterstone'}
-            </strong>
+            <strong>{data?.route?.end_name || "ADvTECH Waterstone"}</strong>
           </div>
         </div>
       </section>
@@ -126,9 +125,15 @@ export default function Passenger({ data, reload }) {
         <ShuttleMap data={data} />
 
         <div className="passenger-map-legend">
-          <span><i className="legend-shuttle" /> Shuttle</span>
-          <span><i className="legend-stop" /> Stops</span>
-          <span><i className="legend-route" /> Route history</span>
+          <span>
+            <i className="legend-shuttle" /> Shuttle
+          </span>
+          <span>
+            <i className="legend-stop" /> Stops
+          </span>
+          <span>
+            <i className="legend-route" /> Route history
+          </span>
         </div>
       </section>
 
@@ -160,17 +165,21 @@ export default function Passenger({ data, reload }) {
         <div className="passenger-card-heading">
           <div>
             <span className="passenger-kicker">PLAN AHEAD</span>
-            <h3><CalendarDays size={21} /> Upcoming departures</h3>
+            <h3>
+              <CalendarDays size={21} /> Upcoming departures
+            </h3>
           </div>
         </div>
 
-        {departures.length > 0 ? departures.map((d) => (
-          <div className="departure" key={d.id}>
-            <b>{d.departure_time}</b>
-            <span>{d.destination}</span>
-            <em>{d.status}</em>
-          </div>
-        )) : (
+        {departures.length > 0 ? (
+          departures.map((d) => (
+            <div className="departure" key={d.id}>
+              <b>{d.departure_time}</b>
+              <span>{d.destination}</span>
+              <em>{d.status}</em>
+            </div>
+          ))
+        ) : (
           <p className="passenger-empty">
             No upcoming departures are currently available.
           </p>
@@ -181,7 +190,6 @@ export default function Passenger({ data, reload }) {
         <span>ADvTECH SHUTTLE TRACKER</span>
         <p>Your journey matters.</p>
       </footer>
-
     </main>
   );
 }

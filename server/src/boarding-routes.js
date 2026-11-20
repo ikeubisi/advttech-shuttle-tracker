@@ -1,1 +1,1 @@
-export { boardingRouter } from './routes/boarding.js';
+export { boardingRouter } from "./routes/boarding.js";

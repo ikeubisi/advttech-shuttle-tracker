@@ -1,1 +1,1 @@
-export * from './services/boarding-gps.js';
+export * from "./services/boarding-gps.js";

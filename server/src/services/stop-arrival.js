@@ -1,23 +1,19 @@
-﻿import { distanceMeters, validCoordinates } from './boarding-gps.js';
+﻿import { distanceMeters, validCoordinates } from "./boarding-gps.js";
 
 export const ARRIVAL_RADIUS_M = 150;
 export const MAX_GPS_AGE_MS = 30_000;
 export const MAX_GPS_ACCURACY_M = 100;
 
-export function detectStopArrival({
-  gps,
-  stop,
-  now = Date.now(),
-}) {
+export function detectStopArrival({ gps, stop, now = Date.now() }) {
   if (!gps || !stop) {
-    return { arrived: false, reason: 'GPS or stop unavailable' };
+    return { arrived: false, reason: "GPS or stop unavailable" };
   }
 
   if (
     !validCoordinates(gps.lat, gps.lng) ||
     !validCoordinates(stop.lat, stop.lng)
   ) {
-    return { arrived: false, reason: 'Invalid coordinates' };
+    return { arrived: false, reason: "Invalid coordinates" };
   }
 
   const gpsTime = new Date(gps.updatedAt).getTime();
@@ -27,7 +23,7 @@ export function detectStopArrival({
     gpsTime > now ||
     now - gpsTime > MAX_GPS_AGE_MS
   ) {
-    return { arrived: false, reason: 'GPS is stale' };
+    return { arrived: false, reason: "GPS is stale" };
   }
 
   if (
@@ -35,22 +31,18 @@ export function detectStopArrival({
     gps.accuracy < 0 ||
     gps.accuracy > MAX_GPS_ACCURACY_M
   ) {
-    return { arrived: false, reason: 'GPS accuracy insufficient' };
+    return { arrived: false, reason: "GPS accuracy insufficient" };
   }
 
-  const distance = distanceMeters(
-    gps.lat,
-    gps.lng,
-    stop.lat,
-    stop.lng,
-  );
+  const distance = distanceMeters(gps.lat, gps.lng, stop.lat, stop.lng);
 
   return {
     arrived: distance <= ARRIVAL_RADIUS_M,
     distanceMeters: Math.round(distance),
-    reason: distance <= ARRIVAL_RADIUS_M
-      ? 'Shuttle is at stop'
-      : 'Shuttle has not reached stop',
+    reason:
+      distance <= ARRIVAL_RADIUS_M
+        ? "Shuttle is at stop"
+        : "Shuttle has not reached stop",
   };
 }
 
@@ -77,7 +69,7 @@ export function confirmStopArrival({
   if (!previous.arrived || !current.arrived) {
     return {
       confirmed: false,
-      reason: 'Two valid GPS readings at the stop are required',
+      reason: "Two valid GPS readings at the stop are required",
     };
   }
 
@@ -90,13 +82,13 @@ export function confirmStopArrival({
   ) {
     return {
       confirmed: false,
-      reason: 'GPS readings must be at least 5 seconds apart',
+      reason: "GPS readings must be at least 5 seconds apart",
     };
   }
 
   return {
     confirmed: true,
     arrivedAt: new Date(currentTime).toISOString(),
-    reason: 'Shuttle arrival confirmed',
+    reason: "Shuttle arrival confirmed",
   };
 }

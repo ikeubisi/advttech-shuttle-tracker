@@ -1,4 +1,4 @@
-import { distanceMeters, validCoordinates } from './boarding-gps.js';
+import { distanceMeters, validCoordinates } from "./boarding-gps.js";
 
 export const DEPARTURE_RADIUS_M = 200;
 export const DEPARTURE_CONFIRMATION_MS = 5_000;
@@ -11,7 +11,8 @@ function validDepartureReading(gps, stop, now, confirmedAt) {
   if (
     !validCoordinates(gps.lat, gps.lng) ||
     !validCoordinates(stop.lat, stop.lng)
-  ) return false;
+  )
+    return false;
 
   const timestamp = new Date(gps.updatedAt).getTime();
 
@@ -20,20 +21,20 @@ function validDepartureReading(gps, stop, now, confirmedAt) {
     timestamp > now ||
     now - timestamp > MAX_GPS_AGE_MS ||
     timestamp <= confirmedAt
-  ) return false;
+  )
+    return false;
 
   if (
     !Number.isFinite(gps.accuracy) ||
     gps.accuracy < 0 ||
     gps.accuracy > MAX_GPS_ACCURACY_M
-  ) return false;
+  )
+    return false;
 
-  return distanceMeters(
-    gps.lat,
-    gps.lng,
-    stop.lat,
-    stop.lng,
-  ) > DEPARTURE_RADIUS_M + gps.accuracy;
+  return (
+    distanceMeters(gps.lat, gps.lng, stop.lat, stop.lng) >
+    DEPARTURE_RADIUS_M + gps.accuracy
+  );
 }
 
 export function confirmStopDeparture({
@@ -46,12 +47,12 @@ export function confirmStopDeparture({
   const confirmedAt =
     driverConfirmedAt === null ||
     driverConfirmedAt === undefined ||
-    driverConfirmedAt === ''
+    driverConfirmedAt === ""
       ? NaN
       : new Date(driverConfirmedAt).getTime();
 
   if (!Number.isFinite(confirmedAt)) {
-    return { confirmed: false, reason: 'Driver confirmation required' };
+    return { confirmed: false, reason: "Driver confirmation required" };
   }
 
   if (
@@ -60,7 +61,7 @@ export function confirmStopDeparture({
   ) {
     return {
       confirmed: false,
-      reason: 'Two fresh GPS readings outside the stop are required',
+      reason: "Two fresh GPS readings outside the stop are required",
     };
   }
 
@@ -73,13 +74,13 @@ export function confirmStopDeparture({
   ) {
     return {
       confirmed: false,
-      reason: 'GPS readings must be at least 5 seconds apart',
+      reason: "GPS readings must be at least 5 seconds apart",
     };
   }
 
   return {
     confirmed: true,
     departedAt: new Date(currentTime).toISOString(),
-    reason: 'GPS departure confirmed',
+    reason: "GPS departure confirmed",
   };
 }

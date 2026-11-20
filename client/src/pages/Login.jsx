@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { api } from '../services/api.js';
-import Brand from '../components/Brand.jsx';
+import React, { useState } from "react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { api } from "../services/api.js";
+import Brand from "../components/Brand.jsx";
 export default function Login({ onLogin }) {
-  const [username, setUsername] = useState(''),
-    [password, setPassword] = useState(''),
+  const [username, setUsername] = useState(""),
+    [password, setPassword] = useState(""),
     [show, setShow] = useState(false),
     [remember, setRemember] = useState(true),
-    [error, setError] = useState(''),
+    [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
   async function submit(e) {
     e.preventDefault();
     setBusy(true);
-    setError('');
+    setError("");
     try {
-      const x = await api('/auth/login', {
-        method: 'POST',
+      const x = await api("/auth/login", {
+        method: "POST",
         body: JSON.stringify({ username, password }),
       });
       onLogin(x.user);
@@ -45,13 +45,17 @@ export default function Login({ onLogin }) {
             <Lock size={20} />
             <input
               required
-              type={show ? 'text' : 'password'}
+              type={show ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               autoComplete="current-password"
             />
-            <button type="button" className="eye" onClick={() => setShow(!show)}>
+            <button
+              type="button"
+              className="eye"
+              onClick={() => setShow(!show)}
+            >
               {show ? <EyeOff size={19} /> : <Eye size={19} />}
             </button>
           </label>
@@ -61,7 +65,7 @@ export default function Login({ onLogin }) {
                 type="checkbox"
                 checked={remember}
                 onChange={(e) => setRemember(e.target.checked)}
-              />{' '}
+              />{" "}
               Remember me
             </label>
             <span title="Contact your shuttle administrator to reset your password">
@@ -70,7 +74,7 @@ export default function Login({ onLogin }) {
           </div>
           {error && <p className="error">{error}</p>}
           <button className="primary" disabled={busy}>
-            {busy ? 'Signing in...' : 'Sign In'}
+            {busy ? "Signing in..." : "Sign In"}
           </button>
           <p className="signup">
             Don't have an account? <span>Contact administrator</span>

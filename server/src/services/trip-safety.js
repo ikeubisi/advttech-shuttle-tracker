@@ -1,4 +1,4 @@
-﻿import { getActiveTrip } from './active-trip.js';
+﻿import { getActiveTrip } from "./active-trip.js";
 
 export async function checkTripSafety(client, shuttleId) {
   const trips = await getActiveTrip(client, shuttleId);
@@ -6,7 +6,7 @@ export async function checkTripSafety(client, shuttleId) {
   if (trips.length === 0) {
     return {
       safe: true,
-      reason: 'No unfinished trips',
+      reason: "No unfinished trips",
       trips: [],
     };
   }
@@ -14,7 +14,7 @@ export async function checkTripSafety(client, shuttleId) {
   if (trips.length > 1) {
     return {
       safe: false,
-      reason: 'Multiple unfinished trips require review',
+      reason: "Multiple unfinished trips require review",
       trips,
     };
   }
@@ -30,11 +30,14 @@ export async function checkTripSafety(client, shuttleId) {
 
   const shuttle = shuttleResult.rows[0];
 
-  if (!shuttle || !shuttle.driver_id ||
-      Number(trip.driver_id) !== Number(shuttle.driver_id)) {
+  if (
+    !shuttle ||
+    !shuttle.driver_id ||
+    Number(trip.driver_id) !== Number(shuttle.driver_id)
+  ) {
     return {
       safe: false,
-      reason: 'Active trip driver does not match assigned shuttle driver',
+      reason: "Active trip driver does not match assigned shuttle driver",
       trips,
     };
   }
@@ -53,23 +56,22 @@ export async function checkTripSafety(client, shuttleId) {
   if (!visit) {
     return {
       safe: true,
-      reason: 'Existing trip has no active stop visit',
+      reason: "Existing trip has no active stop visit",
       trips,
     };
   }
 
-  if (visit.trip_id !== null &&
-      Number(visit.trip_id) !== Number(trip.id)) {
+  if (visit.trip_id !== null && Number(visit.trip_id) !== Number(trip.id)) {
     return {
       safe: false,
-      reason: 'Active stop visit belongs to a different trip',
+      reason: "Active stop visit belongs to a different trip",
       trips,
     };
   }
 
   return {
     safe: true,
-    reason: 'Active trip and stop visit are compatible',
+    reason: "Active trip and stop visit are compatible",
     trips,
   };
 }

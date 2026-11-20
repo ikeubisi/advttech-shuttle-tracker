@@ -2,7 +2,7 @@
   const id = Number(driverId);
 
   if (!Number.isSafeInteger(id) || id <= 0) {
-    throw new Error('Invalid driver ID');
+    throw new Error("Invalid driver ID");
   }
 
   const result = await client.query(

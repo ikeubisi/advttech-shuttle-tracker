@@ -1,4 +1,4 @@
-import { pool } from '../database/db.js';
+import { pool } from "../database/db.js";
 
 export async function getBoardingOverview(user) {
   const result = {
@@ -10,7 +10,7 @@ export async function getBoardingOverview(user) {
     onboardUsers: [],
   };
 
-  if (user.role === 'passenger') {
+  if (user.role === "passenger") {
     const boarding = await pool.query(
       `
       SELECT
@@ -35,7 +35,7 @@ export async function getBoardingOverview(user) {
     result.myBoarding = boarding.rows[0] || null;
   }
 
-  if (user.role === 'driver') {
+  if (user.role === "driver") {
     const onboard = await pool.query(
       `
       SELECT
@@ -63,7 +63,7 @@ export async function getBoardingOverview(user) {
     result.counts.onboard = onboard.rows.length;
   }
 
-  if (user.role === 'admin') {
+  if (user.role === "admin") {
     const counts = await pool.query(`
       SELECT
         COUNT(*) FILTER (
